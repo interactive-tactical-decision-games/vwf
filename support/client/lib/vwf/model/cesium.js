@@ -166,7 +166,7 @@ define( [ "module",
                         case "image":
                             imageProvider = new Cesium.SingleTileImageryProvider({
                                 "url" : url || '../images/Cesium_Logo_overlay.png',
-                                "rectangle" : Cesium.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)
+                                "rectangle" : Cesium.Rectangle.fromDegrees( 0.0, 0.0, 8, 10 )
                             });
                             break;
 
@@ -1359,9 +1359,9 @@ define( [ "module",
 
                         case "imageryProvider":
                             var requestedType = propertyValue.type || propertyValue.terrainProvider;
-                            if ( node.imageryProviderValue === requestedType ) {
-                                return;
-                            }
+                            // if ( node.imageryProviderValue === requestedType ) {
+                            //     return;
+                            // }
                 
                             node.imageProvider = this.state.createImageryProvider ( { 
                                 "imageryProvider": propertyValue
