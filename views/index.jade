@@ -33,6 +33,21 @@ block scenarios
           var scenario = scenario_session.scenario,
             session = scenario_session.session;
         unless session
+          if session.instance || user.instructor
+            tr.session
+              td.col-sm-5= session.state.scenarioTitle
+                br
+                span.small= instructorStudentsLabel( session )
+              if session.state.userName || session.state.userEmail
+                td.col-sm-3(colspan=3)= session.state.userName
+                  br
+                  span.small
+                    a(href="mailto:"+session.state.userEmail)= session.state.userEmail
+              else
+                td.col-sm-3(colspan=3)= session.state.classroom.company
+              td.col-sm-3 &nbsp;
+              td.col-sm-1: a.btn.btn-sm.join(href=session.instance||session.document.uri target="_blank")= session.instance ? "Join" : "Start"
+        else if user.instructor
           tr.scenario
             form
               td.col-sm-5= scenario.state.scenarioTitle
@@ -176,9 +191,7 @@ block review
     thead
       tr
         th.col-sm-5 Scenario
-        th.col-sm-1 Company
-        th.col-sm-1 Platoon
-        th.col-sm-1 Unit
+        th.col-sm-3 Submitter
         th.col-sm-3 Date
         th.col-sm-1 &nbsp;
     tbody: each scenario_session in scenario_sessions
@@ -187,8 +200,12 @@ block review
           session = scenario_session.session;
       tr
         td.col-sm-5= session.state.scenarioTitle
-        td.col-sm-1= session.state.classroom.company
-        td.col-sm-1= session.state.classroom.platoon
-        td.col-sm-1= session.state.classroom.unit
+        if session.state.userName || session.state.userEmail
+          td.col-sm-3= session.state.userName
+            br
+            span.small
+              a(href="mailto:"+session.state.userEmail)= session.state.userEmail
+        else
+          td.col-sm-3= session.state.classroom.company
         td.col-sm-3= dateFormat( session.document.timestamp )
         td.col-sm-1: a.btn.btn-sm.review(href=session.instance||session.document.uri target="_blank") Review
