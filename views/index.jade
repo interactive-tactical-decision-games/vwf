@@ -13,9 +13,7 @@ block scenarios
     thead
       tr
         th.col-sm-5 Scenario
-        th.col-sm-1 Company
-        th.col-sm-1 Platoon
-        th.col-sm-1 Unit
+        th.col-sm-3(colspan=3) &nbsp;
         th.col-sm-2 &nbsp;
         th.col-sm-1 &nbsp;
         th.col-sm-1 &nbsp;
@@ -36,9 +34,7 @@ block scenarios
           tr.scenario
             form
               td.col-sm-5= scenario.state.scenarioTitle
-              td.col-sm-1.company: input.form-control.input-sm(name="company" type="text" maxlength="8")
-              td.col-sm-1.platoon: input.form-control.input-sm(name="platoon" type="number" min="1" max="9" step="1")
-              td.col-sm-1.unit: input.form-control.input-sm(name="unit" type="number" min="1" max="9" step="1")
+              td.col-sm-3(colspan=3) &nbsp;
               td.col-sm-2.name: input(name="name" type="hidden" value=scenario.state.scenarioName)
               td.col-sm-1
                 a.btn.btn-sm.edit(href=scenario.instance||scenario.document.uri target="_blank") Edit
@@ -161,7 +157,7 @@ block sessions
                   span.small
                     a(href="mailto:"+session.state.userEmail)= session.state.userEmail
               else
-                td.col-sm-3(colspan=3)= session.state.classroom.company
+                td.col-sm-3(colspan=3) Anonymous User
               td.col-sm-2 &nbsp;
               td.col-sm-1: a.btn.btn-sm.join(href=session.instance||session.document.uri target="_blank")= session.instance ? "Join" : "Start"
               th.col-sm-1 &nbsp;
@@ -193,6 +189,6 @@ block review
             span.small
               a(href="mailto:"+session.state.userEmail)= session.state.userEmail
         else
-          td.col-sm-3= session.state.classroom.company
+          td.col-sm-3 Anonymous User
         td.col-sm-3= dateFormat( session.document.timestamp )
         td.col-sm-1: a.btn.btn-sm.review(href=session.instance||session.document.uri target="_blank") Review
