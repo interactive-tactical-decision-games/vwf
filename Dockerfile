@@ -15,4 +15,7 @@ VOLUME /usr/src/app/documents
 
 EXPOSE 3000
 
+ONBUILD ARG APPLICATION
+ONBUILD COPY . /usr/src/app/public/${APPLICATION:+${APPLICATION}/}
+
 CMD [ "npm", "start" ]
