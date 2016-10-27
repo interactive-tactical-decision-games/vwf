@@ -3,6 +3,7 @@ FROM node:argon
 ARG NODE_ENV
 
 RUN npm config set strict-ssl false --global
+RUN npm install --global npm@3
 
 WORKDIR /usr/src/app
 
