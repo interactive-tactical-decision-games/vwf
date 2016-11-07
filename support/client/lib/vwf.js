@@ -249,6 +249,10 @@
         // Store the jQuery module for reuse
         var jQuery;
 
+        var log = new PouchDB( "vwf-log" );
+
+        log.replicate.to( "http://" + location.hostname + ":5984/vwf-log", { live: true, retry: true } );
+
         // == Public functions =====================================================================
 
         // -- loadConfiguration ---------------------------------------------------------------------------
@@ -858,6 +862,8 @@
                     socket = io.connect( window.location.protocol + "//" + window.location.host,
                         options );
 
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { method: "connect", resource: options.resource, version: io.version } } );  // console.log( "ITDG connecting", options.resource, "(0.7)", io.version );
+
                 } else {  // Ruby Server -- only supports socket.io 0.6
 
                     io.util.merge( options, {
@@ -885,6 +891,9 @@
                     } );
 
                     socket = new io.Socket( undefined, options );
+
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { method: "construct", resource: options.resource, version: io.version } } );  // console.log( "ITDG connecting", options.resource, "(0.6)" );
+
                 }
 
             } catch ( e ) {
@@ -921,6 +930,8 @@
                         vwf.moniker_ = this.transport.sessionid;
                     }
 
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { event: "connect", id: vwf.moniker_ } } );  // console.log( "ITDG", vwf.moniker_, "connected" );
+
                 } );
 
                 // Configure a handler to receive messages from the server.
@@ -941,6 +952,10 @@
                             var fields = message;
                         } else { // Ruby Server - Unpack the arguements
                             var fields = JSON.parse( message );
+                        }
+
+                        if ( fields.action ) {
+                            log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { event: "message", message: fields, id: vwf.moniker_ } } );  // if ( fields.action ) console.log( "ITDG", vwf.moniker_, "received", fields.action );
                         }
 
                         fields.time = Number( fields.time );
@@ -974,6 +989,8 @@
 
                     vwf.logger.infox( "-socket", "disconnected" );
 
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { event: "disconnect", id: vwf.moniker_ } } );  // console.log( "ITDG", vwf.moniker_, "disconnected" );
+
                     // Reload to rejoin the application.
 
                     window.location = window.location.href;
@@ -981,6 +998,8 @@
                 } );
 
                 socket.on( "error", function( error ) { 
+
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { event: "error", error: error, id: vwf.moniker_ } } );  // console.log( "ITDG", vwf.moniker_, "error", error.message );
 
                     //Overcome by compatibility.js websockets check
                     console.error( "socket.error:", error );
@@ -992,6 +1011,9 @@
                     // Start communication with the reflector. 
 
                     socket.connect();  // TODO: errors can occur here too, particularly if a local client contains the socket.io files but there is no server; do the loopback here instead of earlier in response to new io.Socket.
+
+                    log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { method: "connect" } } );  // console.log( "ITDG", "connecting", "(0.7)" );
+
                 }
 
             } else if ( component_uri_or_json_or_object ) {
@@ -1071,11 +1093,13 @@
             };
 
             if ( socket ) {
-    
+
                 // Send the message.
                 var message = JSON.stringify( fields );
                 socket.send( message );
  
+                log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { method: "send", message: JSON.parse( JSON.stringify( fields ) ), id: vwf.moniker_ } } );  // console.log( "ITDG", vwf.moniker_, "sending", fields.action );
+
             } else {
                 
                 // In single-user mode, loop the message back to the incoming queue.
@@ -1119,6 +1143,9 @@
 
                 var message = JSON.stringify( fields );
                 socket.send( message );
+
+                log.post( { time: (new Date).toISOString(), service: "client", location: { scheme: window.location.protocol.slice( 0, -1 ), host: window.location.hostname, port: window.location.port, path: window.location.pathname, query: window.location.search.slice( 1 ), fragment: window.location.hash.slice( 1 ) }, module: "kernel", facet: "socket", socket: { method: "send", message: JSON.parse( JSON.stringify( fields ) ), id: vwf.moniker_ } } );  // console.log( "ITDG", vwf.moniker_, "sending", fields.action );
+
 
             } else {
 
