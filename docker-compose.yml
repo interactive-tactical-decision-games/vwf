@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  vwf:
+    build:
+      context: .
+      args:
+        http_proxy:
+        HTTPS_PROXY:
+        NODE_ENV:
+    image:
+      docker.davideaster.com/itdg/vwf
+    ports:
+      - "3000:3000"
