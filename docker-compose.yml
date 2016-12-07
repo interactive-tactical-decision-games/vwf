@@ -9,6 +9,6 @@ services:
         HTTPS_PROXY:
         NODE_ENV:
     image:
-      itdg/vwf
+      docker.davideaster.com/itdg/vwf
     ports:
       - "3000:3000"
