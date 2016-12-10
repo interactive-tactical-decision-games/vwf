@@ -1,3 +1,9 @@
 .git
-npm-debug.log
+.gitattributes
+.gitignore
+.gitmodules
+.dockerignore
+Dockerfile
+docker-compose.yml
 node_modules
+npm-debug.log
