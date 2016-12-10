@@ -10,5 +10,11 @@ services:
         NODE_ENV:
     image:
       docker.davideaster.com/itdg/vwf
+    environment:
+      VWF_SESSION_SECRET:
+      VWF_TDG_PASSWORD:
+      VWF_TXS_AMQP_HOST:
+      VWF_TXS_AMQP_EXCHANGE:
+      VWF_TXS_AMQP_CHANNEL:
     ports:
       - "3000:3000"
