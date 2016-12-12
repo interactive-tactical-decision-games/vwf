@@ -34,6 +34,8 @@ block scenarios
           tr.scenario
             form
               td.col-sm-5= scenario.state.scenarioTitle
+                br
+                span.small: samp(data-document-uri=scenario.document.uri).launch-url.text-muted
               td.col-sm-3(colspan=3) &nbsp;
               td.col-sm-2.name: input(name="name" type="hidden" value=scenario.state.scenarioName)
               td.col-sm-1
@@ -43,6 +45,9 @@ block scenarios
                 a.btn.btn-sm.export(href="/export-scenarios?scenarioName=" + scenario.state.scenarioName) Export
     script.
       document.addEventListener( "DOMContentLoaded", function() {
+        $( "table#scenarios tr.scenario .launch-url" ).text( function() {
+          return ( this.baseURI || "" ).replace( /\/$/, "" ) + this.dataset.documentUri;
+        } );
         $( "table#scenarios" ).on( "input", "tr.scenario", function() {
           var this$ = $( this ), filled = this$.find( ".company input" ).val() &&
             this$.find( ".platoon input" ).val() &&
