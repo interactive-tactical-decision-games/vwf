@@ -9,7 +9,7 @@ services:
         HTTPS_PROXY:
         NODE_ENV:
     image:
-      docker.davideaster.com/itdg/vwf
+      itdg/vwf
     environment:
       VWF_SESSION_SECRET:
       VWF_TDG_PASSWORD:
