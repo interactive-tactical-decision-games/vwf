@@ -30,7 +30,7 @@ block scenarios
         -
           var scenario = scenario_session.scenario,
             session = scenario_session.session;
-        unless session
+        if session
           if session.instance || user.instructor
             tr.session
               td.col-sm-5= session.state.scenarioTitle
