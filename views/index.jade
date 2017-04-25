@@ -13,7 +13,7 @@ block scenarios
     thead
       tr
         th.col-sm-5 Scenario
-        th.col-sm-3(colspan=3) Submitter
+        th.col-sm-3(colspan=3) &nbsp;
         th.col-sm-2 &nbsp;
         th.col-sm-1 &nbsp;
         th.col-sm-1 &nbsp;
@@ -30,32 +30,19 @@ block scenarios
         -
           var scenario = scenario_session.scenario,
             session = scenario_session.session;
-        if session
-          if session.instance || user.instructor
-            tr.session
-              td.col-sm-5= session.state.scenarioTitle
+        if scenario
+          if user.instructor
+            tr.scenario
+              td.col-sm-5= scenario.state.scenarioTitle
                 br
-                span.small= instructorStudentsLabel( session )
-              if session.state.submission
-                if session.state.submission.userName || session.state.submission.userEmail
-                  td.col-sm-3(colspan=3)= session.state.submission.userName
-                    br
-                    span.small
-                      a(href="mailto:"+session.state.submission.userEmail)= session.state.submission.userEmail
-              else
-                td.col-sm-3(colspan=3) Anonymous User
-              td.col-sm-3 &nbsp;
-              td.col-sm-1: a.btn.btn-sm.join(href=session.instance||session.document.uri target="_blank")= session.instance ? "Join" : "Start"
-        else if user.instructor
-          tr.scenario
-            td.col-sm-5= scenario.state.scenarioTitle
-              br
-              span.small: samp(data-document-uri=scenario.document.uri).launch-url.text-muted
-            td.col-sm-3(colspan=3) &nbsp;
-            td.col-sm-3.name: input(name="name" type="hidden" value=scenario.state.scenarioName)
-            td.col-sm-1
-              a.btn.btn-sm.edit(href=scenario.instance||scenario.document.uri target="_blank") Edit
-              button.btn.btn-sm.create.hidden Create
+                span.small: samp(data-document-uri=scenario.document.uri).launch-url.text-muted
+              td.col-sm-3(colspan=3) &nbsp;
+              td.col-sm-3.name: input(name="name" type="hidden" value=scenario.state.scenarioName)
+              td.col-sm-1
+                a.btn.btn-sm.edit(href=scenario.instance||scenario.document.uri target="_blank") Edit
+                button.btn.btn-sm.create.hidden Create
+                  td.col-sm-1
+                    a.btn.btn-sm.export(href="/export-scenarios?scenarioName=" + scenario.state.scenarioName) Export
     script.
       document.addEventListener( "DOMContentLoaded", function() {
         $( "table#scenarios tr.scenario .launch-url" ).text( function() {
@@ -155,10 +142,9 @@ block sessions
     thead
       tr
         th.col-sm-5 Scenario
-        th.col-sm-1 Company
-        th.col-sm-1 Platoon
-        th.col-sm-1 Unit
-        th.col-sm-3 &nbsp;
+        th.col-sm-3(colspan=3) Submitter
+        th.col-sm-2 &nbsp;
+        th.col-sm-1 &nbsp;
         th.col-sm-1 &nbsp;
     tbody
       each scenario_session in scenario_sessions
@@ -171,10 +157,15 @@ block sessions
               td.col-sm-5= session.state.scenarioTitle
                 br
                 span.small= instructorStudentsLabel( session )
-              td.col-sm-1= session.state.classroom.company
-              td.col-sm-1= session.state.classroom.platoon
-              td.col-sm-1= session.state.classroom.unit
-              td.col-sm-2 &nbsp;
+              if session.state.submission
+                if session.state.submission.userName || session.state.submission.userEmail
+                  td.col-sm-3(colspan=3)= session.state.submission.userName
+                    br
+                    span.small
+                      a(href="mailto:"+session.state.submission.userEmail)= session.state.submission.userEmail
+              else
+                td.col-sm-3(colspan=3) Anonymous User
+              td.col-sm-3 &nbsp;
               td.col-sm-1: a.btn.btn-sm.join(href=session.instance||session.document.uri target="_blank")= session.instance ? "Join" : "Start"
               th.col-sm-1 &nbsp;
 
