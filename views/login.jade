@@ -19,16 +19,11 @@ block content
                 label(for="middle-initial") M. I.
                 input.form-control#middle-initial(type="text" name="middle_initial")
             .row
-              .form-group.col-sm-5
-                label &nbsp;
-                .checkbox: label
-                  input#instructor(type="checkbox" data-toggle="collapse" data-target="#password-group" value="instructor" name="instructor")
-                  | Instructor
-              .form-group.fade.col-sm-7#password-group
-                style(scoped).
-                  .form-group { transition: height 0.1s }
+              .form-group.col-sm-5#password-group
                 label(for="password") Password
                 input.form-control#password(type="password" name="password")
+              .form-group.col-sm-7
+                label &nbsp;
             .row
               .form-group.form-group-sm.col-sm-12
                 while message = flash.shift()
