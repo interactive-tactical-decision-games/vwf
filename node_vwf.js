@@ -138,7 +138,8 @@ function startVWF() {
 
     //create socket server
     var socketManager = sio.listen( srv, { 
-        log: false,
+        log: true,
+        'log level': 3,
         resource: {
             exec: function( url ) {
                 var match = /\/1\/\?t=\d*/.exec( url ) || /\/1\/websocket/.exec( url );
@@ -158,3 +159,74 @@ function startVWF() {
 }
 
 exports.startVWF = startVWF;
+
+
+
+
+
+const util = require('util');
+
+// Report socket.io connection status to the console.
+
+global.report_sio = function() {
+  Object.keys( instances ).forEach( iid => {
+    let instance = instances[ iid ],
+      cid = Object.keys( instance.clients )[ 0 ],
+      client = instance.clients[ cid ],
+      manager = client.manager;
+    let ids = new Set( [
+      ... Object.keys( manager.sockets.sockets ), ... Object.keys( manager.connected ), ... Object.keys( manager.handshaken ),
+      ... Object.keys( manager.open ), ... Object.keys( manager.closed ) ] );
+    let table = Array.from( ids ).map( id => ( {
+      id: id,
+      ua: manager.sockets.sockets[ id ].handshake.headers[ "user-agent" ],
+      connected: !! manager.connected[ id ],
+      handshaken: !! manager.handshaken[ id ],
+      open: manager.open[ id ],
+      closed: manager.closed[ id ] && manager.closed[ id ].length } ) );
+    console.log( "Instance", iid );
+    console.table( table );
+  } );
+}
+
+// Reset (forcefully close) the TCP socket associated with a socket.io transport.
+
+global.destroy_sio = function( tid ) {
+  Object.keys( instances ).forEach( iid => {
+    let instance = instances[ iid ],
+      cid = Object.keys( instance.clients )[ 0 ],
+      client = instance.clients[ cid ],
+      manager = client.manager,
+      transport = manager.transports[ tid ];
+    console.log( "destroy", tid );
+    transport.socket._destroy( util._errnoException( -4077, 'read' ) );
+    report_sio();
+  } );
+}
+
+// Reset (forcefully close) the TCP socket associated with the given transport if the id matches the
+// global `throw_sio.tid`.
+
+global.throw_sio = function( tid ) {
+  if ( tid === global.throw_sio.tid ) {
+    console.log( "throw", tid );
+    global.destroy_sio( tid );
+  }
+}
+
+global.throw_sio.tid = null;
+
+// Return the TCP socket associated with a socket.io transport.
+
+global.socket_sio = function( tid ) {
+  let socket;
+  Object.keys( instances ).forEach( iid => {
+    let instance = instances[ iid ],
+      cid = Object.keys( instance.clients )[ 0 ],
+      client = instance.clients[ cid ],
+      manager = client.manager,
+      transport = manager.transports[ tid ];
+      socket = transport.socket;
+  } );
+  return socket;
+}
