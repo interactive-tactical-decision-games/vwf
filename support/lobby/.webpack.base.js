@@ -17,6 +17,16 @@ module.exports = {
   module: {
     rules: [ {
       test:
+        /\.js$/,
+      exclude:
+        /node_modules/,
+      loader:
+        "babel-loader",
+      options: {
+        presets: [ "env" ],
+      },
+    }, {
+      test:
         /\.css$/,
       use:
         ExtractText.extract( { fallback: "style-loader", use: "css-loader" } ),
