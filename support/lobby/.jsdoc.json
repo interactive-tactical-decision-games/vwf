@@ -5,7 +5,9 @@
     "exclude": [
       "node_modules",
       "doc",
-      "test"
+      "test",
+      "bundle.js",
+      "bundle.min.js"
     ]
   },
   "opts": {
