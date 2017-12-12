@@ -50,6 +50,7 @@ class Application extends React.Component {
 
   render() {
     return <tr>
+      <Form onSubmit={ event => this.handleSubmit( event ) }>
       <td>
         <FormControl name="title" type="text" placeholder={ Application.TITLE_PLACEHOLDER } bsSize="small"
           value={ this.state.title } onChange={ event => this.handleTitle( event.target.value ) }/>
@@ -65,11 +66,22 @@ class Application extends React.Component {
           Import <FormControl type="file" accept=".zip" style={ { display: "none" } }/>
         </ControlLabel>
       </td>
+      </Form>
     </tr>;
   }
 
   handleTitle( title ) {
     this.setState( { title } );
+  }
+
+  handleSubmit( event ) {
+    let properties = {
+      name: this.name(),
+      title: this.state.title };
+    $.post( "scenarios", properties ).
+      done( function() { document.location.reload() } ).
+      fail( function() {} );
+    event.preventDefault();
   }
 
   name() {
@@ -101,6 +113,7 @@ class Scenario extends React.Component {
       session = this.props.scenario_session.session;
     if ( !session ) {
       return <tr>
+        <Form onSubmit={ event => this.handleSubmit( event ) }>
         <td>
           { scenario.state.scenarioTitle }
         </td><td>
@@ -120,6 +133,7 @@ class Scenario extends React.Component {
         </td><td>
           <Button href={ "/export-scenarios?scenarioName=" + scenario.state.scenarioName } bsSize="small"> Export </Button>
         </td>
+        </Form>
       </tr>;
     } else {
       return null;
@@ -136,6 +150,24 @@ class Scenario extends React.Component {
 
   handleUnit( unit ) {
     this.setState( { unit } );
+  }
+
+  handleSubmit( event ) {
+    const scenario = this.props.scenario_session.scenario,
+      session = this.props.scenario_session.session;
+    let properties = {
+      name: scenario.state.scenarioName,
+      company: this.state.company,
+      platoon: this.state.platoon,
+      unit: this.state.unit };
+    let newTab = window.open( "", "_blank" );
+      newTab.document.write( "Loading..." );
+    $.post( "sessions", properties ).
+      done( function( response ) {
+        newTab.location.href = response.document.uri + "/";
+        document.location.reload() } ).
+      fail( function() {} );
+    event.preventDefault();
   }
 
   filled() {
