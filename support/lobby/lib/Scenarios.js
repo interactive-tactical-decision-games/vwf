@@ -63,7 +63,8 @@ class Application extends React.Component {
         <Button type="submit" disabled={ !this.filled() } bsSize="small"> Create </Button>
       </td><td>
         <ControlLabel className="btn" bsSize="small">
-          Import <FormControl type="file" accept=".zip" style={ { display: "none" } }/>
+          Import <FormControl type="file" accept=".zip" style={ { display: "none" } }
+            onChange={ event => event.target.files[0] && this.handleImport( event.target.files[0] ) }/>
         </ControlLabel>
       </td>
       </Form>
@@ -82,6 +83,23 @@ class Application extends React.Component {
       done( function() { document.location.reload() } ).
       fail( function() {} );
     event.preventDefault();
+  }
+
+  handleImport( file ) {
+    let formData = new FormData();
+      formData.append( "file", file );
+    $.ajax( {
+      url: "/import-scenarios",
+      type: "POST",
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: function( data, textStatus, jqXHR ) {
+        location.reload() },
+      error: function( jqXHR, textStatus, errorThrown ) {
+        let responseText = jqXHR.responseText || "Are you connected to the server?";
+        alert( "Uh oh ... we were unable to upload that file for import.\n" + responseText ) }
+    } );
   }
 
   name() {
