@@ -110,11 +110,10 @@ class Application extends React.Component {
 }
 
 function Scenarioos( props ) {
-  const scenario_sessions =
+  const records =
     locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <React.Fragment>
-    { scenario_sessions.map( ( scenario_session, index ) =>
-      <Scenario key={ index } scenario_session={ scenario_session }/> ) }
+    { records.map( ( record, index ) => <Scenario key={ index } { ...record }/> ) }
   </React.Fragment>;
 }
 
@@ -133,8 +132,8 @@ class Scenario extends React.Component {
   };
 
   render() {
-    const scenario = this.props.scenario_session.scenario,
-      session = this.props.scenario_session.session;
+    const scenario = this.props.scenario,
+      session = this.props.session;
     if ( !session ) {
       return <tr>
         <Form onSubmit={ event => this.handleSubmit( event ) }>
@@ -177,10 +176,8 @@ class Scenario extends React.Component {
   }
 
   handleSubmit( event ) {
-    const scenario = this.props.scenario_session.scenario,
-      session = this.props.scenario_session.session;
     let properties = {
-      name: scenario.state.scenarioName,
+      name: this.props.scenario.state.scenarioName,
       company: this.state.company,
       platoon: this.state.platoon,
       unit: this.state.unit };

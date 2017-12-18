@@ -33,17 +33,16 @@ function Head( props ) {
 }
 
 function Reviewws( props ) {
-  const scenario_sessions =
+  const records =
     locals.sessionScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <React.Fragment>
-    { scenario_sessions.map( ( scenario_session, index ) =>
-      <Review key={ index } scenario_session={ scenario_session }/> ) }
+    { records.map( ( record, index ) => <Review key={ index } { ...record }/> ) }
   </React.Fragment>;
 }
 
 function Review( props ) {
-  const scenario = props.scenario_session.scenario,
-    session = props.scenario_session.session;
+  const scenario = props.scenario,
+    session = props.session;
   return <tr>
     <td>
       { session.state.scenarioTitle }

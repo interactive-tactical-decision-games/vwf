@@ -35,17 +35,16 @@ function Head( props ) {
 }
 
 function Sessioons( props ) {
-  const scenario_sessions =
+  const records =
     locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <React.Fragment>
-    { scenario_sessions.map( ( scenario_session, index ) =>
-      <Session key={ index } scenario_session={ scenario_session }/> ) }
+    { records.map( ( record, index ) => <Session key={ index } { ...record }/> ) }
   </React.Fragment>;
 }
 
 function Session( props ) {
-  const scenario = props.scenario_session.scenario,
-    session = props.scenario_session.session;
+  const scenario = props.scenario,
+    session = props.session;
   if ( session && ( session.instance || user.instructor ) ) {
     return <tr>
       <td>
