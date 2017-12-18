@@ -6,15 +6,12 @@ import * as locals from "./locals";
 const user = { instructor: true };
 
 export default function Sessions( props ) {
-  const scenario_sessions =
-    locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <Table striped>
     <thead>
       <Head/>
     </thead>
     <tbody>
-      { scenario_sessions.map( ( scenario_session, index ) =>
-        <Session key={ index } scenario_session={ scenario_session }/> ) }
+      <Sessioons/>
     </tbody>
   </Table>;
 }
@@ -35,6 +32,15 @@ function Head( props ) {
       &nbsp;
     </th>
   </tr>;
+}
+
+function Sessioons( props ) {
+  const scenario_sessions =
+    locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
+  return <React.Fragment>
+    { scenario_sessions.map( ( scenario_session, index ) =>
+      <Session key={ index } scenario_session={ scenario_session }/> ) }
+  </React.Fragment>;
 }
 
 function Session( props ) {

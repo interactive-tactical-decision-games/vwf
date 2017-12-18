@@ -5,16 +5,13 @@ import $ from "jquery";
 import * as locals from "./locals";
 
 export default function Scenarios( props ) {
-  const scenario_sessions =
-    locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <Table striped>
     <thead>
       <Head/>
     </thead>
     <tbody>
       <Application/>
-      { scenario_sessions.map( ( scenario_session, index ) =>
-        <Scenario key={ index } scenario_session={ scenario_session }/> ) }
+      <Scenarioos/>
     </tbody>
   </Table>;
 }
@@ -110,6 +107,15 @@ class Application extends React.Component {
     return this.state.title.length > 0;
   }
 
+}
+
+function Scenarioos( props ) {
+  const scenario_sessions =
+    locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
+  return <React.Fragment>
+    { scenario_sessions.map( ( scenario_session, index ) =>
+      <Scenario key={ index } scenario_session={ scenario_session }/> ) }
+  </React.Fragment>;
 }
 
 class Scenario extends React.Component {

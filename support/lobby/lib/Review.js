@@ -4,15 +4,12 @@ import { Table, Button } from "react-bootstrap";
 import * as locals from "./locals";
 
 export default function Reviews( props ) {
-  const scenario_sessions =
-    locals.sessionScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <Table striped>
     <thead>
       <Head/>
     </thead>
     <tbody>
-      { scenario_sessions.map( ( scenario_session, index ) =>
-        <Review key={ index } scenario_session={ scenario_session }/> ) }
+      <Reviewws/>
     </tbody>
   </Table>;
 }
@@ -33,6 +30,15 @@ function Head( props ) {
       &nbsp;
     </th>
   </tr>;
+}
+
+function Reviewws( props ) {
+  const scenario_sessions =
+    locals.sessionScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
+  return <React.Fragment>
+    { scenario_sessions.map( ( scenario_session, index ) =>
+      <Review key={ index } scenario_session={ scenario_session }/> ) }
+  </React.Fragment>;
 }
 
 function Review( props ) {
