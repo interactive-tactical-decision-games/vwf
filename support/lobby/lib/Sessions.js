@@ -1,8 +1,6 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
 
-import * as locals from "./locals";
-
 const user = { instructor: true };
 
 export default function Sessions( props ) {
@@ -11,7 +9,7 @@ export default function Sessions( props ) {
       <Head/>
     </thead>
     <tbody>
-      <Sessioons/>
+      <Sessioons records={ props.records }/>
     </tbody>
   </Table>;
 }
@@ -35,10 +33,8 @@ function Head( props ) {
 }
 
 function Sessioons( props ) {
-  const records =
-    locals.scenarioScenarioSessions( locals.manifest[ "/ITDG/index.vwf" ] || [] );
   return <React.Fragment>
-    { records.map( ( record, index ) => <Session key={ index } { ...record }/> ) }
+    { props.records.map( ( record, index ) => <Session key={ index } { ...record }/> ) }
   </React.Fragment>;
 }
 
@@ -50,7 +46,7 @@ function Session( props ) {
       <td>
         { session.state.scenarioTitle }
         <br/>
-        <span className="small">{ locals.instructorStudentsLabel( session ) }</span>
+        <span className="small">{ instructorStudentsLabel( session ) }</span>
       </td><td>
         { session.state.classroom.company }
       </td><td>
@@ -68,6 +64,31 @@ function Session( props ) {
   } else {
     return null;
   }
+}
+
+// Generate the Instructor/Students annotation for a session.
+
+export function instructorStudentsLabel( session ) {
+
+  var instanceCounts = session.completion.instance || { instructors: 0, students: 0 },
+    label = "";
+
+  if ( instanceCounts.instructors > 0 || instanceCounts.students > 0 ) {
+
+    if ( instanceCounts.instructors > 0 ) {
+      label += "Instructor, ";
+    }
+
+    if ( instanceCounts.students === 1 ) {
+      label += instanceCounts.students + " student";
+    } else {
+      label += instanceCounts.students + " students";
+    }
+
+  }
+
+  return label;
+
 }
 
 
