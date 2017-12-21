@@ -9,7 +9,7 @@ import Review from "./review";
 export default class Layout extends React.Component {
 
   state = {
-    manifest
+    manifest: {},
   };
 
   render() {
@@ -42,6 +42,17 @@ export default class Layout extends React.Component {
         </TabContent>
       </div>
     </TabContainer>;
+  }
+
+  componentDidMount() {
+    fetch( "manifest", { credentials: "same-origin" } ).
+      then( response => {
+        if ( !response.ok ) throw Error( response.statusText );
+        return response.json() } ).
+      then( manifest =>
+        this.setState( { manifest: manifest || {} } ) ).
+      catch( error =>
+        console.log( error.message ) );
   }
 
   scenarioRecords() {
