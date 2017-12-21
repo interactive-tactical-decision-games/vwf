@@ -1,6 +1,5 @@
 import React from "react";
 import { Table, Form, FormControl, Button, ControlLabel } from "react-bootstrap";
-import $ from "jquery";
 
 export default function Scenarios( props ) {
   return <Table striped>
@@ -74,27 +73,33 @@ class Application extends React.Component {
     let properties = {
       name: this.name(),
       title: this.state.title };
-    $.post( "scenarios", properties ).
-      done( function() { document.location.reload() } ).
-      fail( function() {} );
+    let options = {
+      method: "POST",
+      body: JSON.stringify( properties ),
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin" };
+    fetch( "scenarios", options ).
+      then( function( response ) {
+        if ( !response.ok ) throw Error( response.statusText );
+        document.location.reload() } ).
+      catch( function( error ) {
+        console.log( error.message ) } );
     event.preventDefault();
   }
 
   handleImport( file ) {
     let formData = new FormData();
       formData.append( "file", file );
-    $.ajax( {
-      url: "/import-scenarios",
-      type: "POST",
-      processData: false,
-      contentType: false,
-      data: formData,
-      success: function( data, textStatus, jqXHR ) {
-        location.reload() },
-      error: function( jqXHR, textStatus, errorThrown ) {
-        let responseText = jqXHR.responseText || "Are you connected to the server?";
-        alert( "Uh oh ... we were unable to upload that file for import.\n" + responseText ) }
-    } );
+    let options = {
+      method: "POST",
+      body: formData,
+      credentials: "same-origin" };
+    fetch( "/import-scenarios", options ).
+      then( function( response ) {
+        if ( !response.ok ) throw Error( response.statusText );
+        location.reload() } ).
+      catch( function( error ) {
+        alert( "Uh oh ... we were unable to upload that file for import.\n" + error.message ) } );
   }
 
   name() {
@@ -177,13 +182,22 @@ class Scenario extends React.Component {
       company: this.state.company,
       platoon: this.state.platoon,
       unit: this.state.unit };
+    let options = {
+      method: "POST",
+      body: JSON.stringify( properties ),
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin" };
     let newTab = window.open( "", "_blank" );
       newTab.document.write( "Loading..." );
-    $.post( "sessions", properties ).
-      done( function( response ) {
+    fetch( "sessions", options ).
+      then( function( response ) {
+        if ( !response.ok ) throw Error( response.statusText );
+        return response.json() } ).
+      then( function( response ) {
         newTab.location.href = response.document.uri + "/";
         document.location.reload() } ).
-      fail( function() {} );
+      catch( function( error ) {
+        console.log( error.message ) } );
     event.preventDefault();
   }
 
