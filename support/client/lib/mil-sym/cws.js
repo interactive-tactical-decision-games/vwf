@@ -8074,7 +8074,7 @@ define( function(){
                                             "additionalInfo3":    "Width", 
                                             "DTG1":               "DTG Start", 
                                             "DTG2":               "DTG End" },
-                        "validModifiers": [ "uniqueDesignation1", "width", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
+                        "validModifiers": [ "uniqueDesignation1", "distance", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
                         "validReferenceSymbols": [ "TACGRP.C2GM.AVN.PNT.ACP", "TACGRP.C2GM.AVN.PNT.COMMCP" ]
                   },
                   "TACGRP.C2GM.AVN.LNE.MRR": {
@@ -8087,7 +8087,7 @@ define( function(){
                                             "additionalInfo2":    "Max Alt", 
                                             "DTG1":               "DTG Start", 
                                             "DTG2":               "DTG End" },
-                        "validModifiers": [ "uniqueDesignation1", "width", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
+                        "validModifiers": [ "uniqueDesignation1", "distance", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
                         "validReferenceSymbols": [ "TACGRP.C2GM.AVN.PNT.ACP", "TACGRP.C2GM.AVN.PNT.COMMCP" ]
                   },
                   "TACGRP.C2GM.AVN.LNE.SAAFR": {
@@ -8100,7 +8100,7 @@ define( function(){
                                             "additionalInfo2":    "Max Alt", 
                                             "DTG1":               "DTG Start", 
                                             "DTG2":               "DTG End" },
-                        "validModifiers": [ "uniqueDesignation1", "width", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
+                        "validModifiers": [ "uniqueDesignation1", "distance", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
                         "validReferenceSymbols": [ "TACGRP.C2GM.AVN.PNT.ACP", "TACGRP.C2GM.AVN.PNT.COMMCP" ]
                   },
                   "TACGRP.C2GM.AVN.LNE.UAR": {
@@ -8113,7 +8113,7 @@ define( function(){
                                             "additionalInfo2":    "Max Alt", 
                                             "DTG1":               "DTG Start", 
                                             "DTG2":               "DTG End" },
-                        "validModifiers": [ "uniqueDesignation1", "width", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
+                        "validModifiers": [ "uniqueDesignation1", "distance", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
                         "validReferenceSymbols": [ "TACGRP.C2GM.AVN.PNT.ACP", "TACGRP.C2GM.AVN.PNT.COMMCP" ]
                   },
                   "TACGRP.C2GM.AVN.LNE.LLTR": {
@@ -8126,7 +8126,7 @@ define( function(){
                                             "additionalInfo2":    "Max Alt", 
                                             "DTG1":               "DTG Start", 
                                             "DTG2":               "DTG End" },
-                        "validModifiers": [ "uniqueDesignation1", "width", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
+                        "validModifiers": [ "uniqueDesignation1", "distance", "additionalInfo1", "additionalInfo2", "DTG1", "DTG2" ],
                         "validReferenceSymbols": [ "TACGRP.C2GM.AVN.PNT.ACP", "TACGRP.C2GM.AVN.PNT.COMMCP" ]
                   }
             },
