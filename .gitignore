@@ -8,3 +8,4 @@ node_modules
 /log/*
 /public/ITDG/
 /public/ITDG/*
+/log/xapi-statements.json
