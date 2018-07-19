@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, FormControl, Button, ControlLabel } from "react-bootstrap";
+import { Table, FormControl, Button, ControlLabel, Checkbox } from "react-bootstrap";
 import ReactTable from "react-table";
 
 import { post } from "./utils";
@@ -19,9 +19,10 @@ export default function Scenarios( props ) {
       </tbody>
     </Table>
     <ReactTable
+     filterable={ !!props.records.length }
       data={ props.records }
       columns={ columns }
-      filterable={ !!props.records.length }
+     
       className="-striped"
       getTrProps={ () => ( {
         fields:
@@ -48,6 +49,7 @@ export default function Scenarios( props ) {
   </React.Fragment>;
 }
 
+
 Scenarios.propTypes = {
   records:
     PropTypes.arrayOf( PropTypes.object ).isRequired,
@@ -70,6 +72,7 @@ class Application extends React.Component {
     buttonOn: true,
   };
  
+ //Function called when Create Scenario button is clicked
   createScenario(){
       this.isCreating(true);
   }
@@ -85,10 +88,13 @@ class Application extends React.Component {
   render() {
     return  <React.Fragment>
        <tr>
+        
+        {/*Click on button to make create info pop up*/}
         <td><Button bsStyle="primary" onClick={this.createScenario.bind(this)} style={{display: this.state.buttonOn ? 'block' : 'none' }}> Create Scenario + </Button></td>
-      
-       <td className="col-sm-8" style = {{width: 'auto'}}>
-        <FormControl disabled = {!this.state.isClicked} style={{display: this.state.isClicked ? 'block' : 'none', width: 'auto'}}
+        
+               {/*will not appear until create button is clicked*/}    
+       <td className = "col-sm-8">
+        <FormControl disabled = {!this.state.isClicked} style={{display: this.state.isClicked ? 'block' : 'none'}}
           name="title"
           type="text"
           placeholder={ Application.TITLE_PLACEHOLDER }
@@ -97,9 +103,8 @@ class Application extends React.Component {
           onChange={ this.handleTitle }
           onKeyPress={ this.handleKeyPress } />
       </td>
-    <td className="col-sm-1">
-        &nbsp;
-      </td>
+   
+        
       <td className="col-sm-1">
 
         <Button type="submit"  disabled = {!this.filled() }
@@ -112,6 +117,8 @@ class Application extends React.Component {
             onChange={ this.handleImport }/>
         </ControlLabel>
       </td>
+
+ {/*X out button to cancel out if you do not want to create scenario*/}
     <td className = "col-sm-1"> 
         <Button 
           onClick={ this.removeScenario.bind(this)} style={{display: this.state.isClicked ? 'block' : 'none' }}> X </Button>           
@@ -125,14 +132,19 @@ class Application extends React.Component {
     this.setState( { title: event.target.value } );
   }
 
+   //closes create info upon clicking 'create' button and leads to new page
   handleSubmit = event => {
+     
     this.setState({isClicked: false});
     this.setState({buttonOn: true});
     let properties = {
       name: this.name(),
       title: this.state.title };
+      let newTab = window.open("", "_blank");
+      newTab.document.write("Loading...");
     post( "scenarios", properties ).
       then( result => {
+        newTab.location.href = result.document.uri + "/";
         this.props.onServerChange && this.props.onServerChange() } ).
       catch( error => {
         console.log( error.message ) } );  /* eslint no-console: "off" */
@@ -143,7 +155,6 @@ class Application extends React.Component {
   
   
    removeScenario(){
-      this.handleSubmit;
       this.notCreating(true);
   }
 
@@ -151,6 +162,8 @@ class Application extends React.Component {
       if(value){
         this.setState({isClicked: false});
         this.setState({buttonOn: true});
+        this.setState({title: ""});
+           
       }
   }
   
@@ -184,43 +197,55 @@ class Application extends React.Component {
     return this.state.title.length > 0;
   }
 
+
+
+
 }
 
-const columns = [ {
+const columns = [     
+    {
   Header:
     "Scenario",
   accessor:
     "scenario.state.scenarioTitle",
   Filter:
-    function Filter( props ) { return <ScenarioFilter { ...props }/> },
-}, {
+    function Filter( props ) { return <ScenarioFilter { ...props }/> 
+                             },
+}, 
+                 
+                 
+{
   Header:
     "Company",
   id:
     "company",
   Cell:
-    function Cell( props ) { return <CompanyCell { ...props }/> },
+    function Cell( props ) { return <CompanyCell { ...props }/> 
+                           },
 }, {
   Header:
     "Platoon",
   id:
     "platoon",
   Cell:
-    function Cell( props ) { return <PlatoonCell { ...props }/> },
+    function Cell( props ) { return <PlatoonCell { ...props }/>
+                           },
 }, {
   Header:
     "Unit",
   id:
     "unit",
   Cell:
-    function Cell( props ) { return <UnitCell { ...props }/> },
+    function Cell( props ) { return <UnitCell { ...props }/> 
+                           },
 }, {
   Header:
     "",
   accessor:
     "scenario.state.scenarioName",
   Cell:
-    function Cell( props ) { return <HiddenCell { ...props }/> },
+    function Cell( props ) { return <HiddenCell { ...props }/> 
+                           },
   sortable:
     false,
   filterable:
@@ -233,12 +258,13 @@ const columns = [ {
   accessor:
     "scenario",
   Cell:
-    function Cell( props ) { return <ActionCell { ...props }/> },
+    function Cell( props ) { return <ActionCell { ...props }/> 
+                           },
   sortable:
     false,
   filterable:
     false,
-}, {
+},{
   Header:
     "",
   id:
@@ -246,7 +272,8 @@ const columns = [ {
   accessor:
     "scenario",
   Cell:
-    function Cell( props ) { return <ExportCell { ...props }/> },
+    function Cell( props ) { return <ExportCell { ...props }/> 
+                           },
   sortable:
     false,
   filterable:
@@ -263,14 +290,16 @@ class ScenarioFilter extends React.Component {
   };
 
   render() {
-    return <input
-      type="text"
+    return <input type="text"
       placeholder="Search"
       value={ this.props.filter ? this.props.filter.value : "" }
       onChange={ event => this.props.onChange( event.target.value ) } />;
   }
 
 }
+
+    
+
 
 class LobbyCell  extends React.Component {
   static contextTypes = {
@@ -318,6 +347,7 @@ class ActionCell extends LobbyCell {
       <Button type="submit" disabled={ !this.context.readers.filled() }
         bsSize="small" className={ !this.context.readers.filled() && "hidden" }
         onClick={ this.handleSubmit }> Start </Button>
+     
     </React.Fragment>;
   }
 
@@ -339,6 +369,35 @@ class ActionCell extends LobbyCell {
   }
 
 }
+
+//class DeleteCell extends React.Component{
+//
+// static propTypes = {
+//    value:
+//      PropTypes.object.isRequired,
+//  };
+// state = {
+//     check: false,
+// }
+//
+//  render() {
+//    return <React.Fragment>
+//      <Checkbox href={this.props.value.instance || this.props.value.document.uri} 
+//        onChange={ this.handleChange } checked = {this.state.check}>  </Checkbox>
+//     
+//    </React.Fragment>;
+//  }
+//
+//  handleChange = event => {
+//   this.setState({check: event.target.checked});
+//  }
+//  
+//
+//}
+
+
+ 
+
 
 class HiddenCell extends React.Component {
 
