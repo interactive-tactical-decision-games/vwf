@@ -214,8 +214,23 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         }    
     }
 
-    function renderUnitSymbol( symbolID, affiliation, echelonID, modifierList, unit ) {
-        
+    function getNewSymbol( symbolID, modifiers, canvas ) {
+        const center = new armyc2.c2sd.renderer.so.Point( canvas.width / 2, canvas.height / 2 );
+        const symbolBounds = new armyc2.c2sd.renderer.so.Rectangle( 0, 0, canvas.width, canvas.height );
+        const imageBounds =  new armyc2.c2sd.renderer.so.Rectangle( 0, 0, canvas.width, canvas.height );
+        let ii = new armyc2.c2sd.renderer.utilities.ImageInfo( canvas, center, symbolBounds, imageBounds );
+        let iinew = armyc2.c2sd.renderer.SinglePointRenderer.processUnitDisplayModifiers( ii, symbolID, modifiers );
+        if(iinew !== null)
+            ii = iinew;
+        iinew = null;
+        iinew = armyc2.c2sd.renderer.SinglePointRenderer.processUnitModifiers(ii,symbolID,modifiers);
+        if(iinew !== null)
+            ii = iinew;
+        return ii;
+    }
+
+    function renderUnitSymbol( symbolID, affiliation, echelonID, modifierList, unit, customParams ) {
+
         if ( !cws ) {
             self.logger.errorx( "cws is undefined - unable to render unit icon" );
             return;
@@ -291,7 +306,13 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         modifiers[ msa.SymbologyStandard ] = rs.Symbology_2525C;
 
         // Render the image
-        var img = renderer.MilStdIconRenderer.Render( updatedUnit.symbolID, modifiers );
+        var img = null;
+        if ( customParams != null && customParams.canvas != null ) {
+            img = getNewSymbol( updatedUnit.symbolID, modifiers, customParams.canvas );
+        }
+        if ( !img ) {
+            img = renderer.MilStdIconRenderer.Render( updatedUnit.symbolID, modifiers );
+        }
         if ( img ) {
             updatedUnit.image = updatedUnit.image || {};
             var imgBounds = img.getImageBounds();
@@ -338,7 +359,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         return updatedUnitSymbolID;
     } 
 
-    function getUnitImage( symbolID ) {
+    function getUnitImage( symbolID, customParams ) {
         var renderer = armyc2.c2sd.renderer;
         var msa = renderer.utilities.MilStdAttributes;
         var rs = renderer.utilities.RendererSettings;
@@ -347,8 +368,13 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         modifiers[ msa.PixelSize ] = 32;
         modifiers[ msa.Icon ] = true;
         modifiers[ msa.SymbologyStandard ] = rs.Symbology_2525C;
-        
-        var img = renderer.MilStdIconRenderer.Render( symbolID, modifiers );
+
+        var img = null;
+        if ( customParams != null && customParams.canvas != null ) {
+            img = getNewSymbol( updatedUnit.symbolID, modifiers, customParams.canvas );
+        } else {
+          img = renderer.MilStdIconRenderer.Render( symbolID, modifiers );
+        }
         if ( img ) {
             return img.toDataUrl();
         } else {
