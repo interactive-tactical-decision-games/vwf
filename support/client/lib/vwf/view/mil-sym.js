@@ -356,7 +356,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         }
     }
 
-    function renderMissionGraphic( symbolID, affiliation, modifiers, controlPoints, bounds, msnGfx, format ) {
+    function renderMissionGraphic( symbolID, affiliation, modifiers, controlPoints, bounds, latLonBoundBox, format ) {
         
         if ( !cws ) {
             self.logger.errorx( "cws is undefined - unable to render unit icon" );
@@ -383,7 +383,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
             actualNameModifiers[ modActualName ] = self.state.convertModifierValue( modObj, modifiers[ mod ] );
         }
 
-        var img = rendererMP.RenderSymbol2D( "ID", "Name", "Description", symbolCode, milSymControlPts, bounds[0], bounds[1], null, actualNameModifiers, format );
+        var img = rendererMP.RenderSymbol2D( "ID", "Name", "Description", symbolCode, milSymControlPts, bounds[0], bounds[1], latLonBoundBox, actualNameModifiers, format );
 
         return img;
     }

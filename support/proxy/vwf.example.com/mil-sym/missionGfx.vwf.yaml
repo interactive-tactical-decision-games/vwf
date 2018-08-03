@@ -22,6 +22,8 @@ properties:
         this.imageChanged( value );
       }
 
+  latLonBoundBox:
+
 methods:
   render:
 

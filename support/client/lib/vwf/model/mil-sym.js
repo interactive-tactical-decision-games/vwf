@@ -456,6 +456,7 @@ define( [ "module",
                         case "controlPts":
                         case "symbolType":
                         case "bounds":
+                        case "latLonBoundBox":
                             if ( node.nodeType === "missionGfx" && propertyValue !== undefined && propertyValue !== null ) {
                                 node[ propertyName ] = propertyValue;
                                 renderImage = basicPropertiesMet( node );
@@ -550,6 +551,8 @@ define( [ "module",
                     case "height":
                     case "controlPts":
                     case "symbolType":
+                    case "bounds":
+                    case "latLonBoundBox":
                         value = node[ propertyName ];
                         break;
                 }
@@ -702,9 +705,8 @@ define( [ "module",
                 symbolCode = cws.addAffiliationToSymbolId( node.symbolID, node.affiliation );
             }
             
-            var img = rendererMP.RenderSymbol2D(node.ID,node.fullName,node.description, symbolCode, controlPts, node.bounds[0], node.bounds[1], null, node.modifiers, format);
+            var img = rendererMP.RenderSymbol2D(node.ID,node.fullName,node.description, symbolCode, controlPts, node.bounds[0], node.bounds[1], ( node.latLonBoundBox || "" ), node.modifiers, format);
 
-            //if ( !!img && !!img.image ) {
             if ( ( img || {} ).image ) {
                 value = img.image;
             }
