@@ -32,7 +32,7 @@ this.initialize = function() {
         }, this );
 
         this.icon.imageGenerator.imageRendered = this.events.add( function( img, iconSize, symbolCenter, symbolBounds ) {
-            
+
             if ( this.threatArea ) {
                 this.threatArea.position = this.icon.symbolCenter;    
             }
