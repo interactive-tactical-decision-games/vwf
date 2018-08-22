@@ -8262,6 +8262,16 @@ define( function(){
                   }
             },
 
+            "rangeRings": {
+                  "TACGRP.FSUPP.ARS.WPNRF.CIRCLR": {
+                        "symbolID": "G*FPAXC---****X",
+                        "tag": "WEAPON/SENSOR RANGE RINGS",
+                        "symbolType": "RangeRings",
+                        "modifierLabels": { "distance": "Min Range (m)" },
+                        "validModifiers": [ "distance", "altitudeDepthArray" ]
+                  }                  
+            },
+
             "aliasModifiers": { 
                   "echelon":             { modifier:  "B_ECHELON",
                                            type:      "ModifiersUnits",
@@ -8348,6 +8358,9 @@ define( function(){
                                             type:      "ModifiersTG",
                                             valueType: "Array" },
                   "azimuth":              { modifier:  "AN_AZIMUTH",                            
+                                            type:      "ModifiersTG",
+                                            valueType: "Array" },
+                  "altitudeDepthArray":   { modifier:  "X_ALTITUDE_DEPTH",
                                             type:      "ModifiersTG",
                                             valueType: "Array" },
                   "length":               { modifier:  "LENGTH",                            
