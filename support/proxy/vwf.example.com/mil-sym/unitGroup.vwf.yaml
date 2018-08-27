@@ -26,6 +26,7 @@ properties:
     set: |
       if ( this.threatArea !== undefined ) {
         this.threatArea.visible = value;
+        this.handleRender();
       }
     get: |
       if ( this.threatArea !== undefined ) {
