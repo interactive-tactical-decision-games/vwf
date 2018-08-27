@@ -29,6 +29,7 @@ properties:
   speed:
   validModifiers:
   distance:
+  altitudeDepthArray:
   azimuth:
   length:
   width:
