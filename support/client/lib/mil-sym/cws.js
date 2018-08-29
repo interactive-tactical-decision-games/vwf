@@ -8269,6 +8269,13 @@ define( function(){
                         "symbolType": "RangeRings",
                         "modifierLabels": { "distance": "Min Range (m)" },
                         "validModifiers": [ "distance", "altitudeDepthArray" ]
+                  },
+                  "TACGRP.FSUPP.ARS.WPNRF.SCR": {
+                        "symbolID": "G*FPAXS---****X",
+                        "tag": "WEAPON/SENSOR SECTOR FAN",
+                        "symbolType": "SectorFan",
+                        "modifierLabels": { "distance": "Sector 1 Rng (m)" },
+                        "validModifiers": [ "distance", "azimuth" ]
                   }                  
             },
 
