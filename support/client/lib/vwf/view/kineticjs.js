@@ -1296,8 +1296,10 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                     clearBeforeDraw = true;
                     break;
 
-                case "ellipse":         
-                    drawingObject.radius( { "x": width * 0.5, "y": height * 0.5 } );
+                case "ellipse":
+                    // Prevent Konva bug where color fills screen if ellipse is too skinny
+                    const minWidth = userState.drawing_width * 2;
+                    drawingObject.radius( { "x": ( width < minWidth ? minWidth : width ), "y": ( height < minWidth ? minWidth : height ) } );
                     drawingObject.stroke( userState.drawing_color );
                     drawingObject.strokeWidth( userState.drawing_width );
                     drawingObject.fill( null );
