@@ -7873,7 +7873,7 @@ define( function(){
                         "validModifiers": [ "uniqueDesignation1", "DTG1", "DTG2" ]
                   },
                   "TACGRP.FSUPP.ARS.C2ARS.SNSZ.CIRCLR": {
-                        "symbolID": "G*FPACEI--****X",
+                        "symbolID": "G*FPACEC--****X",
                         "tag": "SENSOR ZONE CIRCULAR",
                         "symbolType": "SimpleCircle",
                         "modifierLabels": { "DTG1":     "Eff Start", 
