@@ -642,6 +642,7 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                 case "opacity":
                     drawThis = true;
                     clearBefore = true;
+                    break;
 
                 default:
                     drawThis = this.state.pauseRendering ? false : !activelyDrawing;
