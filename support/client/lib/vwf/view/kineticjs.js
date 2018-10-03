@@ -642,6 +642,7 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                 case "opacity":
                     drawThis = true;
                     clearBefore = true;
+                    break;
 
                 default:
                     drawThis = this.state.pauseRendering ? false : !activelyDrawing;
@@ -1256,6 +1257,8 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
             var height = diffY;
             var dist = Math.sqrt( ( diffX * diffX ) + ( diffY * diffY ) );
             var angleDeg = Math.atan2( diffY, diffX ) * 180.0 / Math.PI;
+            drawingObject.x( privateState.initialDownPoint[ 0 ] );
+            drawingObject.y( privateState.initialDownPoint[ 1 ] );
 
             // this keeps the pos as the top left corner for the 
             // rectangular objects
@@ -1278,8 +1281,7 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                     if ( diffY < 0 ) {
                         pos[ 1 ] += diffY;  
                         height = Math.abs( diffY );
-                    } 
-                    drawingObject.position( privateState.initialDownPoint );
+                    }
                     drawingObject.width( width );
                     drawingObject.height( height );  
                     break;          
@@ -1342,7 +1344,7 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                     
                     if ( isFirstStrokeOfNewLine ) {
                         if ( ( Math.abs( posX ) + Math.abs( posY ) ) > 0 ) {
-                            points = [ 0, 0, posX, posY ];
+                            points = [ posX, posY ];
                             privateState[ "previousPoint" ] = [ posX, posY ];
                         } else {
                             pointAccepted = false;   
@@ -1412,9 +1414,6 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                 case "arrow":
                 case "thickArrow":
                     var arrowWidthMult = ( userState.drawing_mode === 'arrow' ? 3 : 8 );
-
-                    drawingObject.x( drawingObject.position[ 0 ] );
-                    drawingObject.y( drawingObject.position[ 1 ] ); 
 
                     drawingObject.stroke( userState.drawing_color );
                     drawingObject.strokeWidth( userState.drawing_width );
