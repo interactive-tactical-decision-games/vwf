@@ -19,6 +19,11 @@
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "settings": {
+    "react": {
+      "version": "16.2"
+    }
+  },
   "rules": {
     "no-console": "warn",
     "no-unused-vars": [ "warn", { "args": "none" } ],

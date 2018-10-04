@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, FormControl, Button, ControlLabel, Checkbox } from "react-bootstrap";
+import { Table, FormControl, Button, ControlLabel } from "react-bootstrap";
 import ReactTable from "react-table";
 
 import { post } from "./utils";
