@@ -1816,7 +1816,7 @@ define( [ "module", "vwf/view", "jquery", "vwf/utility", "vwf/utility/color", "v
                 retObj.disableScaleAndRotationForSpeed = false;
                 break;
             default:
-                retObj.fill = userState.drawing_color;
+                retObj.fill = null;
                 break;
         }
 
