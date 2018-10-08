@@ -15,7 +15,7 @@
     "lib/"
   ],
   "scripts": {
-    "prepublish": "npm run build && npm run test",
+    "prepare": "npm run build && npm run test",
     "build": "npm run build:webpack && npm run build:jsdoc",
     "build:webpack": "npm run build:webpack:prod && npm run build:webpack:dev",
     "build:webpack:prod": "webpack --config .webpack.prod.js",
