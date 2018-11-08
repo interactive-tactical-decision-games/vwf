@@ -5135,6 +5135,14 @@ define( function(){
                       "symbolID": "GUMPBCP---****X",
                       "tag": "TACGRP"
                   },
+                  "TACGRP.MOBSU.OBST.AVN.TWR.LOW": {
+                      "symbolID": "G*MPOHTL--****X",
+                      "tag": "TACGRP"
+                  },
+                  "TACGRP.MOBSU.OBST.AVN.TWR.HIGH": {
+                      "symbolID": "G*MPOHTH--****X",
+                      "tag": "TACGRP"
+                  },
                   "TACGRP.MOBSU.SU.ESTOF": {
                       "symbolID": "GUMPSE----****X",
                       "tag": "TACGRP"
