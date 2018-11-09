@@ -6967,9 +6967,12 @@ define( function(){
                   "TACGRP.MOBSU.OBST.OBSEFT.TUR": {
                         "symbolID": "G*MPOET---****X",
                         "tag": "TURN",
-                        "symbolType": "DefinedMissionGraphic",
-                        "defaultControlPts": [ 10,50, 100,90, 20,10 ],
-                        "defaultDimensions": [100, 100]
+                        "symbolType": "SimplePath",
+                        "numberPoints": 3,
+                        "width": 20
+//                        "symbolType": "DefinedMissionGraphic",
+//                        "defaultControlPts": [ 10,50, 100,90, 20,10 ],
+//                        "defaultDimensions": [100, 100]
                   }                  
             },
 
