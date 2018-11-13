@@ -123,6 +123,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         renderMissionGraphic: renderMissionGraphic,
         getDefaultSymbolFillColor: getDefaultSymbolFillColor,
         getUnitImage: getUnitImage,
+        symbolIsUnit: symbolIsUnit,
 
         on: function( eventName, callback ) {
             eventHandlers[ eventName ] = callback;
@@ -455,6 +456,10 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
           color = colors[ affiliation ];
 
           return color;
+    }
+
+    function symbolIsUnit( symbolID ) {
+        return ( armyc2.c2sd.renderer.utilities.SymbolUtilities.isUnit( symbolID ) );
     }
 
 } );
