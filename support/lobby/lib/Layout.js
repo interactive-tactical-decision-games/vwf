@@ -148,13 +148,13 @@ function sessionComparator( sessionA, sessionB ) {
     classroomA = stateA.classroom || {},
     companyA = ( classroomA.company || "" ).toLowerCase(),
     platoonA = Number( classroomA.platoon ),
-    unitA = Number( classroomA.unit );
+    unitA = ( classroomB.unit || "" ).toLowerCase();
 
   var stateB = sessionB.state || {},
     classroomB = stateB.classroom || {},
     companyB = ( classroomB.company || "" ).toLowerCase(),
     platoonB = Number( classroomB.platoon ),
-    unitB = Number( classroomB.unit );
+    unitB = ( classroomB.unit || "" ).toLowerCase();
 
   if ( companyA < companyB ) {
     return -1;

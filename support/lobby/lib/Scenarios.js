@@ -8,8 +8,7 @@ import { post } from "./utils";
 let COMPANY_LENGTH = 8;
 let PLATOON_MIN = 1;
 let PLATOON_MAX = 9;
-let UNIT_MIN = 1;
-let UNIT_MAX = 9;
+let UNIT_LENGTH = 9;
 
 export default function Scenarios( props ) {
   return <React.Fragment>
@@ -328,8 +327,25 @@ class PlatoonCell extends LobbyCell {
 
 class UnitCell extends LobbyCell {
   render() {
-    return <FormControl name="unit" type="number" min={ UNIT_MIN } max={ UNIT_MAX } step="1" bsSize="small"
-      value={ this.context.values.unit } onChange={ this.context.writers.unit }/>;
+
+    // Limit keystrokes to alphanumeric only
+    function processKeyDown( e ) {
+      var k = e.keyCode || e.which;
+      var ok = k >= 65 && k <= 90 || // A-Z
+        k >= 96 && k <= 105 || // a-z
+        k >= 35 && k <= 40 || // arrows
+        k == 9 || //tab
+        k == 46 || //del
+        k == 8 || // backspaces
+        (!e.shiftKey && k >= 48 && k <= 57); // only 0-9 (ignore SHIFT options)
+
+      if(!ok || (e.ctrlKey && e.altKey)){
+        e.preventDefault();
+      }
+    }
+
+    return <FormControl name="unit" type="text" maxLength={ UNIT_LENGTH } bsSize="small"
+      value={ this.context.values.unit } onKeyDown={ processKeyDown } onChange={ this.context.writers.unit }/>;
   }
 }
 
