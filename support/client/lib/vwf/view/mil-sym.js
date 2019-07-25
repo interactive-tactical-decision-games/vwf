@@ -124,6 +124,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         getDefaultSymbolFillColor: getDefaultSymbolFillColor,
         getUnitImage: getUnitImage,
         symbolIsUnit: symbolIsUnit,
+        getValidModifiers: getValidModifiers,
 
         on: function( eventName, callback ) {
             eventHandlers[ eventName ] = callback;
@@ -227,7 +228,6 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         var renderer = armyc2.c2sd.renderer;
         var msa = renderer.utilities.MilStdAttributes;
         var rs = renderer.utilities.RendererSettings;
-        var symUtil = renderer.utilities.SymbolUtilities;
         
         // Set affiliation in unit symbol id
         updatedUnit.symbolID = cws.addAffiliationToSymbolId( symbolID, affiliation );
@@ -235,30 +235,6 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         // Add echelon
         if ( echelonID != undefined ) {          
             updatedUnit.symbolID = cws.addEchelonToSymbolId( updatedUnit.symbolID, echelonID );
-        }
-        
-        // Define the list of valid modifiers
-        updatedUnit.validModifiers = [ "pixelSize", "iconcolor", "lineColor", "fillColor" ];
-        var aliases = Object.keys( cws.aliasModifiers );
-        for ( var i = 0; i < aliases.length; i++ ) {
-
-            var alias = aliases[ i ];
-            var modObj = cws.aliasModifiers[ alias ];
-            
-            var modifier = renderer.utilities.ModifiersUnits[ modObj.modifier ];
-            // Query mil-sym to see if this symbol has this modifier
-            if ( symUtil.hasModifier( updatedUnit.symbolID, 
-                                      modifier,
-                                      rs.getSymbologyStandard() ) ) {
-                // Add to the array of valid modifiers
-                updatedUnit.validModifiers.push( alias );
-            }
-
-        }
-        // If there is a special modifier defined for this symbol, 
-        // add it as a valid modifier
-        for ( var j = 0; j < ( updatedUnit.specialModifiers || [] ).length; j++ ) {
-            updatedUnit.validModifiers.push( updatedUnit.specialModifiers[ j ] );
         }
         
         // Gather the modifiers that will be passed into the render function
@@ -355,6 +331,42 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         } else {
             return "";
         }
+    }
+
+    function getValidModifiers( symbolID, specialModifiers ) {
+        const renderer = armyc2.c2sd.renderer;
+        const msa = renderer.utilities.MilStdAttributes;
+        const rs = renderer.utilities.RendererSettings;
+        var symUtil = renderer.utilities.SymbolUtilities;
+        var validModifiers = [];
+
+        // Define the list of valid modifiers
+        validModifiers = [ "pixelSize", "iconcolor", "lineColor", "fillColor" ];
+        var aliases = Object.keys( cws.aliasModifiers );
+        for ( var i = 0; i < aliases.length; i++ ) {
+
+            var alias = aliases[ i ];
+            var modObj = cws.aliasModifiers[ alias ];
+            
+            var modifier = renderer.utilities.ModifiersUnits[ modObj.modifier ];
+            // Query mil-sym to see if this symbol has this modifier
+            if ( symUtil.hasModifier( symbolID, 
+                                      modifier,
+                                      rs.getSymbologyStandard() ) ) {
+                // Add to the array of valid modifiers
+                validModifiers.push( alias );
+            }
+        }
+
+        // If there is a special modifier defined for this symbol, 
+        // add it as a valid modifier
+        if ( specialModifiers ) {
+            for ( var j = 0; j < ( specialModifiers || [] ).length; j++ ) {
+                validModifiers.push( specialModifiers[ j ] );
+            }
+        }
+
+        return validModifiers;
     }
 
     function renderMissionGraphic( symbolID, affiliation, modifiers, controlPoints, bounds, latLonBoundBox, format ) {
