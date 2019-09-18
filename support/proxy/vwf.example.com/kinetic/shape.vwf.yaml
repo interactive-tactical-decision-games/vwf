@@ -51,3 +51,4 @@ properties:
   x: 0
   y: 0
   supportMouseAndTouchEvents: true
+  scalePropertiesOnZoom:
