@@ -125,6 +125,7 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         getUnitImage: getUnitImage,
         symbolIsUnit: symbolIsUnit,
         getValidModifiers: getValidModifiers,
+        isMilStd2525Symbol: isMilStd2525Symbol,
 
         on: function( eventName, callback ) {
             eventHandlers[ eventName ] = callback;
@@ -331,6 +332,18 @@ define( [ "module", "vwf/view", "mil-sym/cws", "jquery" ], function( module, vie
         } else {
             return "";
         }
+    }
+
+    function isMilStd2525Symbol( symbolID ) {
+        var renderer = armyc2.c2sd.renderer;
+        var msa = renderer.utilities.MilStdAttributes;
+        var rs = renderer.utilities.RendererSettings;
+        
+        const basicSymbolID = renderer.utilities.SymbolUtilities.getBasicSymbolID( symbolID );
+        const isUnit        = renderer.utilities.UnitDefTable.hasUnitDef( basicSymbolID, rs.Symbology_2525C );
+        const isSymbol      = renderer.utilities.SymbolDefTable.hasSymbolDef( basicSymbolID, rs.Symbology_2525C );
+
+        return ( isUnit || isSymbol );
     }
 
     function getValidModifiers( symbolID, specialModifiers ) {
